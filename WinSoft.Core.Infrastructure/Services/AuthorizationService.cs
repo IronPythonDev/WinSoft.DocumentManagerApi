@@ -32,25 +32,18 @@ namespace WinSoft.Core.Infrastructure.Services
 
         public async Task<string> GetUserJwt(User user)
         {
-            try
-            {
-                var identity = await GetUserIdentity(user);
+            var identity = await GetUserIdentity(user);
 
-                var jwtConfiguration = Configuration.GetJwtConfiguration();
+            var jwtConfiguration = Configuration.GetJwtConfiguration();
 
-                var token = new System.IdentityModel.Tokens.Jwt.JwtSecurityToken(
-                    issuer: jwtConfiguration.Issuer,
-                    audience: jwtConfiguration.Audience,
-                    identity.Claims,
-                    expires: DateTime.Now.Add(TimeSpan.FromHours(24)),
-                    signingCredentials: jwtConfiguration.Key);
+            var token = new System.IdentityModel.Tokens.Jwt.JwtSecurityToken(
+                issuer: jwtConfiguration.Issuer,
+                audience: jwtConfiguration.Audience,
+                identity.Claims,
+                expires: DateTime.Now.Add(TimeSpan.FromHours(24)),
+                signingCredentials: jwtConfiguration.Key);
 
-                return new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler().WriteToken(token);
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            return new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler().WriteToken(token);
         }
     }
 }
